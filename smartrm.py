@@ -4,26 +4,25 @@ import os
 import sys
 import subprocess
 
-def query(question, default="yes"):
-    valid = {"yes": True, "y": True, "ye": True,
-             "no": False, "n": False}
-    if default is None:
-        prompt = " [y/n] "
-    elif default == "yes":
+def query(question, default=True):
+    if default == True:
         prompt = " [Y/n] "
-    elif default == "no":
+    elif default == False:
         prompt = " [y/N] "
     else:
-        raise ValueError("invalid default answer: '%s'" % default)
+        prompt = " [y/n] "
 
     try:
         while True:
             sys.stdout.write(question + prompt)
             choice = raw_input().lower()
             if default is not None and choice == '':
-                return valid[default]
+                return default
             elif choice in valid:
-                return valid[choice]
+                if choice == "y" or choice == "yes":
+                    return True
+                elif choice == "n" or choice == "no":
+                    return False
     except KeyboardInterrupt:
         sys.exit()
 
@@ -68,7 +67,7 @@ def main():
         if cfile_recursive and not force:
             if (os.path.isdir(cfile + "/.git")):
                 print("Detected git repository in " + cfile)
-                if query("Would you like to force remove the .git directory?", default="yes"):
+                if query("Would you like to force remove the .git directory?"):
                     subprocess.call(["rm"] + flags + ["--recursive", "--force", cfile + "/.git"])
                     print("Force removed %s" % cfile + "/.git")
 

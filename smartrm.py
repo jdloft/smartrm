@@ -74,7 +74,8 @@ def main():
         if cfile_recursive:
             subprocess.call(["rm"] + flags + ["--recursive", cfile])
 
-    subprocess.call(["rm"] + flags + files)
+    if len(files) > 0:
+        subprocess.call(["rm"] + flags + files)
 
 if __name__ == '__main__':
     main()

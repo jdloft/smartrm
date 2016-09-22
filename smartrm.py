@@ -18,7 +18,7 @@ def query(question, default=True):
             choice = raw_input().lower()
             if default is not None and choice == '':
                 return default
-            elif choice in valid:
+            elif choice:
                 if choice == "y" or choice == "yes":
                     return True
                 elif choice == "n" or choice == "no":
